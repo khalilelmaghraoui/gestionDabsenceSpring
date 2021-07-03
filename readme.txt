@@ -10,7 +10,7 @@
 5- Insréer les données suivantes:
 
 		INSERT INTO `person` (`idPersonne`, `address`, `age`, `email`, `firstName`, `gender`, `lastName`, `nationalIdNumber`, `state`) VALUES
-		(1, NULL, 36, 't.bo121@yahoo.fr', 'BOUDAA', 'male', 'Tarik', 'AA12345678', 'Morocco');
+		(1, NULL, 36, 'khalil@yahoo.fr', 'elmaghraoui', 'male', 'khalil', 'AA12345678', 'Morocco');
 		INSERT INTO `role` (`id`, `roleName`) VALUES
 		(1, 'ROLE_ADMIN'),
 		(2, 'ROLE_USER');
