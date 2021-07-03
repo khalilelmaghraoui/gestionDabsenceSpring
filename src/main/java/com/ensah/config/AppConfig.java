@@ -110,7 +110,7 @@ public class AppConfig implements WebMvcConfigurer {
 
 		Properties hibernateProperties = new Properties();
 
-		hibernateProperties.setProperty("hibernate.hbm2ddl.auto", "update");
+		hibernateProperties.setProperty("hibernate.hbm2ddl.auto", "create");
 		hibernateProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.MariaDB103Dialect");
 		hibernateProperties.setProperty("hibernate.show_sql", "true");
 
@@ -130,7 +130,7 @@ public class AppConfig implements WebMvcConfigurer {
 
 		// TODO : A mettre à jour en fonction de votre base de données
 		dataSource.setDriverClassName("org.mariadb.jdbc.Driver"); // Driver
-		dataSource.setUrl("jdbc:mysql://localhost:3306/mini_projet"); // L'url d'accès à la base de données
+		dataSource.setUrl("jdbc:mysql://localhost:3306/zbi"); // L'url d'accès à la base de données
 		dataSource.setUsername("root"); // login
 		dataSource.setPassword(""); // mot de passe
 		return dataSource;

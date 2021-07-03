@@ -4,45 +4,75 @@ package com.ensah.core.bo; /****************************************************
  * Purpose: Defines the Class Absence
  ***********************************************************************/
 
+import javax.persistence.*;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
+
+@Entity
 public class Absence {
+   @Id
+   @GeneratedValue(strategy=GenerationType.IDENTITY)
    private int idAbsence;
-   private java.util.Date dateHeureDebutAbsence;
-   private java.util.Date dateHeureFinAbsence;
+
+   private Date dateHeureDebutAbsence;
+
+   private Date dateHeureFinAbsence;
+
    private int etat;
 
    private String typeSaisie;
 
-   public java.util.Collection<PieceJustificative> pieceJustificative;
+   @ManyToMany
+   @JoinTable(name="Absence_PieceJustificative",
+		   	  joinColumns = @JoinColumn(name="idAbsence"),
+		   	  inverseJoinColumns = @JoinColumn(name="idPieceJustificative")
+		   )
+   public Collection<PieceJustificative> pieceJustificative;
+
+   @ManyToOne
+   @JoinColumn(name="idInscription")
    public Inscription inscription;
+
+   @ManyToOne
+   @JoinColumn(name="idTypeSeance")
    public TypeSeance typeSeance;
+
+   @ManyToOne
+   @JoinColumn(name="idUtilisateur")
    public Enseignant observateur;
 
-   Enseignant enseignant = new Enseignant();
 
-
-   public java.util.Collection<PieceJustificative> getPieceJustificative() {
+   /** @pdGenerated default getter */
+   public Collection<PieceJustificative> getPieceJustificative() {
       if (pieceJustificative == null)
-         pieceJustificative = new java.util.HashSet<PieceJustificative>();
+         pieceJustificative = new HashSet<PieceJustificative>();
       return pieceJustificative;
    }
 
-   public java.util.Iterator getIteratorPieceJustificative() {
+   /** @pdGenerated default iterator getter */
+   public Iterator getIteratorPieceJustificative() {
       if (pieceJustificative == null)
-         pieceJustificative = new java.util.HashSet<PieceJustificative>();
+         pieceJustificative = new HashSet<PieceJustificative>();
       return pieceJustificative.iterator();
    }
 
-   public void setPieceJustificative(java.util.Collection<PieceJustificative> newPieceJustificative) {
+   /** @pdGenerated default setter
+     * @param newPieceJustificative */
+   public void setPieceJustificative(Collection<PieceJustificative> newPieceJustificative) {
       removeAllPieceJustificative();
-      for (java.util.Iterator iter = newPieceJustificative.iterator(); iter.hasNext();)
+      for (Iterator iter = newPieceJustificative.iterator(); iter.hasNext();)
          addPieceJustificative((PieceJustificative)iter.next());
    }
 
+   /** @pdGenerated default add
+     * @param newPieceJustificative */
    public void addPieceJustificative(PieceJustificative newPieceJustificative) {
       if (newPieceJustificative == null)
          return;
       if (this.pieceJustificative == null)
-         this.pieceJustificative = new java.util.HashSet<PieceJustificative>();
+         this.pieceJustificative = new HashSet<PieceJustificative>();
       if (!this.pieceJustificative.contains(newPieceJustificative))
       {
          this.pieceJustificative.add(newPieceJustificative);
@@ -50,6 +80,8 @@ public class Absence {
       }
    }
 
+   /** @pdGenerated default remove
+     * @param oldPieceJustificative */
    public void removePieceJustificative(PieceJustificative oldPieceJustificative) {
       if (oldPieceJustificative == null)
          return;
@@ -61,11 +93,12 @@ public class Absence {
          }
    }
 
+   /** @pdGenerated default removeAll */
    public void removeAllPieceJustificative() {
       if (pieceJustificative != null)
       {
          PieceJustificative oldPieceJustificative;
-         for (java.util.Iterator iter = getIteratorPieceJustificative(); iter.hasNext();)
+         for (Iterator iter = getIteratorPieceJustificative(); iter.hasNext();)
          {
             oldPieceJustificative = (PieceJustificative)iter.next();
             iter.remove();
@@ -73,10 +106,13 @@ public class Absence {
          }
       }
    }
+   /** @pdGenerated default parent getter */
    public Inscription getInscription() {
       return inscription;
    }
 
+   /** @pdGenerated default parent setter
+     * @param newInscription */
    public void setInscription(Inscription newInscription) {
       if (this.inscription == null || !this.inscription.equals(newInscription))
       {
@@ -93,12 +129,13 @@ public class Absence {
          }
       }
    }
-
+   /** @pdGenerated default parent getter */
    public TypeSeance getTypeSeance() {
       return typeSeance;
    }
 
-
+   /** @pdGenerated default parent setter
+     * @param newTypeSeance */
    public void setTypeSeance(TypeSeance newTypeSeance) {
       if (this.typeSeance == null || !this.typeSeance.equals(newTypeSeance))
       {
@@ -115,12 +152,13 @@ public class Absence {
          }
       }
    }
-
+   /** @pdGenerated default parent getter */
    public Enseignant getObservateur() {
       return observateur;
    }
 
-
+   /** @pdGenerated default parent setter
+     * @param newEnseignant */
    public void setObservateur(Enseignant newEnseignant) {
       if (this.observateur == null || !this.observateur.equals(newEnseignant))
       {

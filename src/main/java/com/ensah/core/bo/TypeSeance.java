@@ -1,41 +1,58 @@
-package com.ensah.core.bo; /***********************************************************************
- * Module:  TypeSeance.java
- * Author:  Hp
- * Purpose: Defines the Class TypeSeance
- ***********************************************************************/
+package com.ensah.core.bo;
 
+import java.util.*;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="typeseance")
 public class TypeSeance {
+
+   @Id
+   @GeneratedValue(strategy=GenerationType.IDENTITY)
    private int idTypeSeance;
    private String intitule;
    private String alias;
 
-   public java.util.Collection<Absence> absences;
+   @OneToMany(mappedBy="typeseance", cascade = CascadeType.ALL)
+   public Collection<Absence> absences;
 
 
-   public java.util.Collection<Absence> getAbsences() {
+   /** @pdGenerated default getter */
+   public Collection<Absence> getAbsences() {
       if (absences == null)
-         absences = new java.util.HashSet<Absence>();
+         absences = new HashSet<Absence>();
       return absences;
    }
 
-   public java.util.Iterator getIteratorAbsences() {
+   /** @pdGenerated default iterator getter */
+   public Iterator getIteratorAbsences() {
       if (absences == null)
-         absences = new java.util.HashSet<Absence>();
+         absences = new HashSet<Absence>();
       return absences.iterator();
    }
 
-   public void setAbsences(java.util.Collection<Absence> newAbsences) {
+   /** @pdGenerated default setter
+     * @param newAbsences */
+   public void setAbsences(Collection<Absence> newAbsences) {
       removeAllAbsences();
-      for (java.util.Iterator iter = newAbsences.iterator(); iter.hasNext();)
+      for (Iterator iter = newAbsences.iterator(); iter.hasNext();)
          addAbsences((Absence)iter.next());
    }
 
-
+   /** @pdGenerated default add
+     * @param newAbsence */
    public void addAbsences(Absence newAbsence) {
       if (newAbsence == null)
          return;
       if (this.absences == null)
-         this.absences = new java.util.HashSet<Absence>();
+         this.absences = new HashSet<Absence>();
       if (!this.absences.contains(newAbsence))
       {
          this.absences.add(newAbsence);
@@ -43,6 +60,8 @@ public class TypeSeance {
       }
    }
 
+   /** @pdGenerated default remove
+     * @param oldAbsence */
    public void removeAbsences(Absence oldAbsence) {
       if (oldAbsence == null)
          return;
@@ -54,11 +73,12 @@ public class TypeSeance {
          }
    }
 
+   /** @pdGenerated default removeAll */
    public void removeAllAbsences() {
       if (absences != null)
       {
          Absence oldAbsence;
-         for (java.util.Iterator iter = getIteratorAbsences(); iter.hasNext();)
+         for (Iterator iter = getIteratorAbsences(); iter.hasNext();)
          {
             oldAbsence = (Absence)iter.next();
             iter.remove();

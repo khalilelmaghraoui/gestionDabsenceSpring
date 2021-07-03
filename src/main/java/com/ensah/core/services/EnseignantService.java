@@ -19,7 +19,7 @@ public class EnseignantService implements IEnseignantService {
     @Override
     public List<Etudiant> getAllEtudiants() {
 
-
+return null;
     }
 
     @Override

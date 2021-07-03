@@ -28,12 +28,13 @@
 		<p>Hello and welcome to your application</p>
 
 		<s:authorize access="isAuthenticated()">
-    			You are connected with: 
+    			You are connected with:
     			 <s:authentication property="principal.username" /> <br>
 			Your Email : <s:authentication property="principal.email" /><br>
 			Your First Name : <s:authentication property="principal.firstName" /><br>
 			Your Last name : <s:authentication property="principal.LastName" /><br>
 		</s:authorize>
+    </div>
 	</div>
 
 

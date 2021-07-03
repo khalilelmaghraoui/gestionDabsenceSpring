@@ -1,44 +1,66 @@
-package com.ensah.core.bo; /***********************************************************************
- * Module:  Filiere.java
- * Author:  Hp
- * Purpose: Defines the Class Filiere
- ***********************************************************************/
+package com.ensah.core.bo;
 
+import java.util.*;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+
+@Entity
 public class Filiere {
+   @Id
+   @GeneratedValue(strategy=GenerationType.IDENTITY)
    private String idFiliere;
+
    private String titreFiliere;
+
    private String codeFiliere;
+
    private int anneeaccreditation;
+
    private int anneeFinaccreditation;
 
-   public java.util.Collection<Niveau> niveaux;
-   public java.util.Collection<Coordination> periodeCoordination;
+   @OneToMany(mappedBy="filiere", cascade=CascadeType.ALL)
+   public Collection<Niveau> niveaux;
+
+   @OneToMany(cascade=CascadeType.ALL)
+   @JoinColumn(name="idUtilisateur")
+   public Collection<Coordination> periodeCoordination;
 
 
-   public java.util.Collection<Niveau> getNiveaux() {
+   /** @pdGenerated default getter */
+   public Collection<Niveau> getNiveaux() {
       if (niveaux == null)
-         niveaux = new java.util.HashSet<Niveau>();
+         niveaux = new HashSet<Niveau>();
       return niveaux;
    }
 
-   public java.util.Iterator getIteratorNiveaux() {
+   /** @pdGenerated default iterator getter */
+   public Iterator getIteratorNiveaux() {
       if (niveaux == null)
-         niveaux = new java.util.HashSet<Niveau>();
+         niveaux = new HashSet<Niveau>();
       return niveaux.iterator();
    }
 
-
-   public void setNiveaux(java.util.Collection<Niveau> newNiveaux) {
+   /** @pdGenerated default setter
+     * @param newNiveaux */
+   public void setNiveaux(Collection<Niveau> newNiveaux) {
       removeAllNiveaux();
-      for (java.util.Iterator iter = newNiveaux.iterator(); iter.hasNext();)
+      for (Iterator iter = newNiveaux.iterator(); iter.hasNext();)
          addNiveaux((Niveau)iter.next());
    }
 
+   /** @pdGenerated default add
+     * @param newNiveau */
    public void addNiveaux(Niveau newNiveau) {
       if (newNiveau == null)
          return;
       if (this.niveaux == null)
-         this.niveaux = new java.util.HashSet<Niveau>();
+         this.niveaux = new HashSet<Niveau>();
       if (!this.niveaux.contains(newNiveau))
       {
          this.niveaux.add(newNiveau);
@@ -46,6 +68,8 @@ public class Filiere {
       }
    }
 
+   /** @pdGenerated default remove
+     * @param oldNiveau */
    public void removeNiveaux(Niveau oldNiveau) {
       if (oldNiveau == null)
          return;
@@ -57,11 +81,12 @@ public class Filiere {
          }
    }
 
+   /** @pdGenerated default removeAll */
    public void removeAllNiveaux() {
       if (niveaux != null)
       {
          Niveau oldNiveau;
-         for (java.util.Iterator iter = getIteratorNiveaux(); iter.hasNext();)
+         for (Iterator iter = getIteratorNiveaux(); iter.hasNext();)
          {
             oldNiveau = (Niveau)iter.next();
             iter.remove();
@@ -69,32 +94,41 @@ public class Filiere {
          }
       }
    }
-   public java.util.Collection<Coordination> getPeriodeCoordination() {
+   /** @pdGenerated default getter */
+   public Collection<Coordination> getPeriodeCoordination() {
       if (periodeCoordination == null)
-         periodeCoordination = new java.util.HashSet<Coordination>();
+         periodeCoordination = new HashSet<Coordination>();
       return periodeCoordination;
    }
 
-   public java.util.Iterator getIteratorPeriodeCoordination() {
+   /** @pdGenerated default iterator getter */
+   public Iterator getIteratorPeriodeCoordination() {
       if (periodeCoordination == null)
-         periodeCoordination = new java.util.HashSet<Coordination>();
+         periodeCoordination = new HashSet<Coordination>();
       return periodeCoordination.iterator();
    }
 
-   public void setPeriodeCoordination(java.util.Collection<Coordination> newPeriodeCoordination) {
-       removeAllPeriodeCoordination();
-       for (java.util.Iterator iter = newPeriodeCoordination.iterator(); iter.hasNext(); )
-           addPeriodeCoordination((Coordination) iter.next());
+   /** @pdGenerated default setter
+     * @param newPeriodeCoordination */
+   public void setPeriodeCoordination(Collection<Coordination> newPeriodeCoordination) {
+      removeAllPeriodeCoordination();
+      for (Iterator iter = newPeriodeCoordination.iterator(); iter.hasNext();)
+         addPeriodeCoordination((Coordination)iter.next());
    }
-       public void addPeriodeCoordination(Coordination newCoordination) {
+
+   /** @pdGenerated default add
+     * @param newCoordination */
+   public void addPeriodeCoordination(Coordination newCoordination) {
       if (newCoordination == null)
          return;
       if (this.periodeCoordination == null)
-         this.periodeCoordination = new java.util.HashSet<Coordination>();
+         this.periodeCoordination = new HashSet<Coordination>();
       if (!this.periodeCoordination.contains(newCoordination))
          this.periodeCoordination.add(newCoordination);
    }
 
+   /** @pdGenerated default remove
+     * @param oldCoordination */
    public void removePeriodeCoordination(Coordination oldCoordination) {
       if (oldCoordination == null)
          return;
@@ -103,6 +137,7 @@ public class Filiere {
             this.periodeCoordination.remove(oldCoordination);
    }
 
+   /** @pdGenerated default removeAll */
    public void removeAllPeriodeCoordination() {
       if (periodeCoordination != null)
          periodeCoordination.clear();

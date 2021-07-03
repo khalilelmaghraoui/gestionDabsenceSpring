@@ -1,50 +1,65 @@
-package com.ensah.core.bo; /***********************************************************************
- * Module:  Compte.java
- * Author:  Hp
- * Purpose: Defines the Class Compte
- ***********************************************************************/
+package com.ensah.core.bo;
 
 import java.util.*;
 
-/** @pdOid 54b4f677-0274-4a2a-8584-9b0e541dade9 */
-public class Compte {
-   /** @pdOid 9780edab-b1e5-41db-bc33-84b23b90064f */
-   private int idCompte;
-   /** @pdOid a1480356-0c70-4ff3-a09b-982e62f5afda */
-   private int enabled;
-   /** @pdOid 6407f970-5298-4516-91ff-e969dae4f0c1 */
-   private int accountNotExpired;
-   /** @pdOid 7c8e8a24-009a-4948-af6f-ba2506b3e9b4 */
-   private int accountNotLocked;
-   /** @pdOid 69c0a702-0402-4d7c-be6f-884cf2afc7f1 */
-   private int login;
-   /** @pdOid 1430fff9-80b2-40a4-a952-824d09dc16fe */
-   private int password;
-   /** @pdOid 17e09c9f-f7ab-4de9-ae9c-ddeb3ee2dccb */
-   private boolean disconnectAccount;
-   /** @pdOid e972a27d-1522-48df-a541-f50a4fa46af6 */
-   private boolean accepteDemandeAutorisationAbsence;
-   /** @pdOid af847586-3703-4127-9171-a9d1cbf9d73d */
-   private boolean affichePhoto;
-   /** @pdOid 587b43fa-739a-4826-a185-ba0bfcdd8910 */
-   private boolean afficheEmail;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
-   /** @pdRoleInfo migr=no name=Role assc=Association_6 coll=java.util.Collection impl=java.util.HashSet mult=1..1 */
-   public Role role;
-   /** @pdRoleInfo migr=no name=Notification assc=Association_10 coll=java.util.Collection impl=java.util.HashSet mult=0..* */
-   public java.util.Collection<Notification> notifications;
-   /** @pdRoleInfo migr=no name=Message assc=Association_12 coll=java.util.Collection impl=java.util.HashSet mult=0..* */
-   public java.util.Collection<Message> messagesEnvoyes;
-   /** @pdRoleInfo migr=no name=Message assc=Association_13 coll=java.util.Collection impl=java.util.HashSet mult=0..* */
-   public java.util.Collection<Message> messagesReçus;
-   /** @pdRoleInfo migr=no name=Conversation assc=Association_15 coll=java.util.Collection impl=java.util.HashSet mult=0..* */
-   public java.util.Collection<Conversation> conversationsCrees;
-   /** @pdRoleInfo migr=no name=JournalisationEvenements assc=Association_19 coll=java.util.Collection impl=java.util.HashSet mult=0..* */
-   public java.util.Collection<JournalisationEvenements> evenements;
-   /** @pdRoleInfo migr=no name=Utilisateur assc=Association_7 coll=java.util.Collection impl=java.util.HashSet mult=1..1 side=A */
-   public Utilisateur proprietaire;
-   /** @pdRoleInfo migr=no name=Conversation assc=Compte_Conversation coll=java.util.Collection impl=java.util.HashSet mult=0..* side=A */
-   public java.util.Collection<Conversation> conversationReçues;
+@Entity
+public class Compte {
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private int idCompte;
+
+    private int enabled;
+    private int accountNotExpired;
+    private int accountNotLocked;
+    private int login;
+    private int password;
+    private boolean disconnectAccount;
+    private boolean accepteDemandeAutorisationAbsence;
+    private boolean affichePhoto;
+    private boolean afficheEmail;
+
+    @ManyToOne
+    @JoinColumn(name="role_id")
+    public Role role;
+
+    @OneToMany(mappedBy="compte", cascade=CascadeType.ALL)
+    public Collection<Notification> notifications;
+
+    @OneToMany(mappedBy="compte", cascade=CascadeType.ALL)
+    public Collection<Message> messagesEnvoyes;
+
+    @OneToMany(mappedBy="compte", cascade=CascadeType.ALL)
+    public Collection<Message> messagesReçus;
+
+
+    @ManyToMany
+    @JoinTable(
+	   		name="Compte_Conversation",
+				joinColumns=@JoinColumn(name="idCompte"),
+				inverseJoinColumns=@JoinColumn(name="idConversation"))
+    public Collection<Conversation> conversationsCrees;
+
+
+    @OneToMany(mappedBy="compte", cascade=CascadeType.ALL)
+    public Collection<JournalisationEvenements> evenements;
+
+    @ManyToOne
+    @JoinColumn(name="idUtilisateur")
+    public Utilisateur proprietaire;
+
+    @OneToMany(mappedBy="compte", cascade=CascadeType.ALL)
+    public Collection<Conversation> conversationReçues;
 
 
    /** @pdGenerated default parent getter */
@@ -70,34 +85,35 @@ public class Compte {
          }
       }
    }
-
-   public java.util.Collection<Notification> getNotifications() {
+   /** @pdGenerated default getter */
+   public Collection<Notification> getNotifications() {
       if (notifications == null)
-         notifications = new java.util.HashSet<Notification>();
+         notifications = new HashSet<Notification>();
       return notifications;
    }
 
-
-   public java.util.Iterator getIteratorNotifications() {
+   /** @pdGenerated default iterator getter */
+   public Iterator getIteratorNotifications() {
       if (notifications == null)
-         notifications = new java.util.HashSet<Notification>();
+         notifications = new HashSet<Notification>();
       return notifications.iterator();
    }
 
-
-
-   public void setNotifications(java.util.Collection<Notification> newNotifications) {
+   /** @pdGenerated default setter
+     * @param newNotifications */
+   public void setNotifications(Collection<Notification> newNotifications) {
       removeAllNotifications();
-      for (java.util.Iterator iter = newNotifications.iterator(); iter.hasNext();)
+      for (Iterator iter = newNotifications.iterator(); iter.hasNext();)
          addNotifications((Notification)iter.next());
    }
 
-
+   /** @pdGenerated default add
+     * @param newNotification */
    public void addNotifications(Notification newNotification) {
       if (newNotification == null)
          return;
       if (this.notifications == null)
-         this.notifications = new java.util.HashSet<Notification>();
+         this.notifications = new HashSet<Notification>();
       if (!this.notifications.contains(newNotification))
       {
          this.notifications.add(newNotification);
@@ -105,7 +121,8 @@ public class Compte {
       }
    }
 
-
+   /** @pdGenerated default remove
+     * @param oldNotification */
    public void removeNotifications(Notification oldNotification) {
       if (oldNotification == null)
          return;
@@ -117,13 +134,12 @@ public class Compte {
          }
    }
 
-
-
+   /** @pdGenerated default removeAll */
    public void removeAllNotifications() {
       if (notifications != null)
       {
          Notification oldNotification;
-         for (java.util.Iterator iter = getIteratorNotifications(); iter.hasNext();)
+         for (Iterator iter = getIteratorNotifications(); iter.hasNext();)
          {
             oldNotification = (Notification)iter.next();
             iter.remove();
@@ -131,34 +147,35 @@ public class Compte {
          }
       }
    }
-
-
-   public java.util.Collection<Message> getMessagesEnvoyes() {
+   /** @pdGenerated default getter */
+   public Collection<Message> getMessagesEnvoyes() {
       if (messagesEnvoyes == null)
-         messagesEnvoyes = new java.util.HashSet<Message>();
+         messagesEnvoyes = new HashSet<Message>();
       return messagesEnvoyes;
    }
 
-
-   public java.util.Iterator getIteratorMessagesEnvoyes() {
+   /** @pdGenerated default iterator getter */
+   public Iterator getIteratorMessagesEnvoyes() {
       if (messagesEnvoyes == null)
-         messagesEnvoyes = new java.util.HashSet<Message>();
+         messagesEnvoyes = new HashSet<Message>();
       return messagesEnvoyes.iterator();
    }
 
-
-   public void setMessagesEnvoyes(java.util.Collection<Message> newMessagesEnvoyes) {
+   /** @pdGenerated default setter
+     * @param newMessagesEnvoyes */
+   public void setMessagesEnvoyes(Collection<Message> newMessagesEnvoyes) {
       removeAllMessagesEnvoyes();
-      for (java.util.Iterator iter = newMessagesEnvoyes.iterator(); iter.hasNext();)
+      for (Iterator iter = newMessagesEnvoyes.iterator(); iter.hasNext();)
          addMessagesEnvoyes((Message)iter.next());
    }
 
-
+   /** @pdGenerated default add
+     * @param newMessage */
    public void addMessagesEnvoyes(Message newMessage) {
       if (newMessage == null)
          return;
       if (this.messagesEnvoyes == null)
-         this.messagesEnvoyes = new java.util.HashSet<Message>();
+         this.messagesEnvoyes = new HashSet<Message>();
       if (!this.messagesEnvoyes.contains(newMessage))
       {
          this.messagesEnvoyes.add(newMessage);
@@ -166,7 +183,8 @@ public class Compte {
       }
    }
 
-
+   /** @pdGenerated default remove
+     * @param oldMessage */
    public void removeMessagesEnvoyes(Message oldMessage) {
       if (oldMessage == null)
          return;
@@ -178,12 +196,12 @@ public class Compte {
          }
    }
 
-
+   /** @pdGenerated default removeAll */
    public void removeAllMessagesEnvoyes() {
       if (messagesEnvoyes != null)
       {
          Message oldMessage;
-         for (java.util.Iterator iter = getIteratorMessagesEnvoyes(); iter.hasNext();)
+         for (Iterator iter = getIteratorMessagesEnvoyes(); iter.hasNext();)
          {
             oldMessage = (Message)iter.next();
             iter.remove();
@@ -191,30 +209,35 @@ public class Compte {
          }
       }
    }
-
-   public java.util.Collection<Message> getMessagesReçus() {
+   /** @pdGenerated default getter */
+   public Collection<Message> getMessagesReçus() {
       if (messagesReçus == null)
-         messagesReçus = new java.util.HashSet<Message>();
+         messagesReçus = new HashSet<Message>();
       return messagesReçus;
    }
 
-   public java.util.Iterator getIteratorMessagesReçus() {
+   /** @pdGenerated default iterator getter */
+   public Iterator getIteratorMessagesReçus() {
       if (messagesReçus == null)
-         messagesReçus = new java.util.HashSet<Message>();
+         messagesReçus = new HashSet<Message>();
       return messagesReçus.iterator();
    }
 
-   public void setMessagesReçus(java.util.Collection<Message> newMessagesReçus) {
+   /** @pdGenerated default setter
+     * @param newMessagesReçus */
+   public void setMessagesReçus(Collection<Message> newMessagesReçus) {
       removeAllMessagesReçus();
-      for (java.util.Iterator iter = newMessagesReçus.iterator(); iter.hasNext();)
+      for (Iterator iter = newMessagesReçus.iterator(); iter.hasNext();)
          addMessagesReçus((Message)iter.next());
    }
 
+   /** @pdGenerated default add
+     * @param newMessage */
    public void addMessagesReçus(Message newMessage) {
       if (newMessage == null)
          return;
       if (this.messagesReçus == null)
-         this.messagesReçus = new java.util.HashSet<Message>();
+         this.messagesReçus = new HashSet<Message>();
       if (!this.messagesReçus.contains(newMessage))
       {
          this.messagesReçus.add(newMessage);
@@ -222,6 +245,8 @@ public class Compte {
       }
    }
 
+   /** @pdGenerated default remove
+     * @param oldMessage */
    public void removeMessagesReçus(Message oldMessage) {
       if (oldMessage == null)
          return;
@@ -233,11 +258,12 @@ public class Compte {
          }
    }
 
+   /** @pdGenerated default removeAll */
    public void removeAllMessagesReçus() {
       if (messagesReçus != null)
       {
          Message oldMessage;
-         for (java.util.Iterator iter = getIteratorMessagesReçus(); iter.hasNext();)
+         for (Iterator iter = getIteratorMessagesReçus(); iter.hasNext();)
          {
             oldMessage = (Message)iter.next();
             iter.remove();
@@ -245,31 +271,35 @@ public class Compte {
          }
       }
    }
-
-   public java.util.Collection<Conversation> getConversationsCrees() {
+   /** @pdGenerated default getter */
+   public Collection<Conversation> getConversationsCrees() {
       if (conversationsCrees == null)
-         conversationsCrees = new java.util.HashSet<Conversation>();
+         conversationsCrees = new HashSet<Conversation>();
       return conversationsCrees;
    }
 
-
-   public java.util.Iterator getIteratorConversationsCrees() {
+   /** @pdGenerated default iterator getter */
+   public Iterator getIteratorConversationsCrees() {
       if (conversationsCrees == null)
-         conversationsCrees = new java.util.HashSet<Conversation>();
+         conversationsCrees = new HashSet<Conversation>();
       return conversationsCrees.iterator();
    }
 
-   public void setConversationsCrees(java.util.Collection<Conversation> newConversationsCrees) {
+   /** @pdGenerated default setter
+     * @param newConversationsCrees */
+   public void setConversationsCrees(Collection<Conversation> newConversationsCrees) {
       removeAllConversationsCrees();
-      for (java.util.Iterator iter = newConversationsCrees.iterator(); iter.hasNext();)
+      for (Iterator iter = newConversationsCrees.iterator(); iter.hasNext();)
          addConversationsCrees((Conversation)iter.next());
    }
 
+   /** @pdGenerated default add
+     * @param newConversation */
    public void addConversationsCrees(Conversation newConversation) {
       if (newConversation == null)
          return;
       if (this.conversationsCrees == null)
-         this.conversationsCrees = new java.util.HashSet<Conversation>();
+         this.conversationsCrees = new HashSet<Conversation>();
       if (!this.conversationsCrees.contains(newConversation))
       {
          this.conversationsCrees.add(newConversation);
@@ -277,6 +307,8 @@ public class Compte {
       }
    }
 
+   /** @pdGenerated default remove
+     * @param oldConversation */
    public void removeConversationsCrees(Conversation oldConversation) {
       if (oldConversation == null)
          return;
@@ -288,11 +320,12 @@ public class Compte {
          }
    }
 
+   /** @pdGenerated default removeAll */
    public void removeAllConversationsCrees() {
       if (conversationsCrees != null)
       {
          Conversation oldConversation;
-         for (java.util.Iterator iter = getIteratorConversationsCrees(); iter.hasNext();)
+         for (Iterator iter = getIteratorConversationsCrees(); iter.hasNext();)
          {
             oldConversation = (Conversation)iter.next();
             iter.remove();
@@ -300,30 +333,35 @@ public class Compte {
          }
       }
    }
-
-   public java.util.Collection<JournalisationEvenements> getEvenements() {
+   /** @pdGenerated default getter */
+   public Collection<JournalisationEvenements> getEvenements() {
       if (evenements == null)
-         evenements = new java.util.HashSet<JournalisationEvenements>();
+         evenements = new HashSet<JournalisationEvenements>();
       return evenements;
    }
 
-   public java.util.Iterator getIteratorEvenements() {
+   /** @pdGenerated default iterator getter */
+   public Iterator getIteratorEvenements() {
       if (evenements == null)
-         evenements = new java.util.HashSet<JournalisationEvenements>();
+         evenements = new HashSet<JournalisationEvenements>();
       return evenements.iterator();
    }
 
-   public void setEvenements(java.util.Collection<JournalisationEvenements> newEvenements) {
+   /** @pdGenerated default setter
+     * @param newEvenements */
+   public void setEvenements(Collection<JournalisationEvenements> newEvenements) {
       removeAllEvenements();
-      for (java.util.Iterator iter = newEvenements.iterator(); iter.hasNext();)
+      for (Iterator iter = newEvenements.iterator(); iter.hasNext();)
          addEvenements((JournalisationEvenements)iter.next());
    }
 
+   /** @pdGenerated default add
+     * @param newJournalisationEvenements */
    public void addEvenements(JournalisationEvenements newJournalisationEvenements) {
       if (newJournalisationEvenements == null)
          return;
       if (this.evenements == null)
-         this.evenements = new java.util.HashSet<JournalisationEvenements>();
+         this.evenements = new HashSet<JournalisationEvenements>();
       if (!this.evenements.contains(newJournalisationEvenements))
       {
          this.evenements.add(newJournalisationEvenements);
@@ -331,6 +369,8 @@ public class Compte {
       }
    }
 
+   /** @pdGenerated default remove
+     * @param oldJournalisationEvenements */
    public void removeEvenements(JournalisationEvenements oldJournalisationEvenements) {
       if (oldJournalisationEvenements == null)
          return;
@@ -342,11 +382,12 @@ public class Compte {
          }
    }
 
+   /** @pdGenerated default removeAll */
    public void removeAllEvenements() {
       if (evenements != null)
       {
          JournalisationEvenements oldJournalisationEvenements;
-         for (java.util.Iterator iter = getIteratorEvenements(); iter.hasNext();)
+         for (Iterator iter = getIteratorEvenements(); iter.hasNext();)
          {
             oldJournalisationEvenements = (JournalisationEvenements)iter.next();
             iter.remove();
@@ -354,12 +395,13 @@ public class Compte {
          }
       }
    }
-
+   /** @pdGenerated default parent getter */
    public Utilisateur getProprietaire() {
       return proprietaire;
    }
 
-
+   /** @pdGenerated default parent setter
+     * @param newUtilisateur */
    public void setProprietaire(Utilisateur newUtilisateur) {
       if (this.proprietaire == null || !this.proprietaire.equals(newUtilisateur))
       {
@@ -376,31 +418,35 @@ public class Compte {
          }
       }
    }
-
-   public java.util.Collection<Conversation> getConversationReçues() {
+   /** @pdGenerated default getter */
+   public Collection<Conversation> getConversationReçues() {
       if (conversationReçues == null)
-         conversationReçues = new java.util.HashSet<Conversation>();
+         conversationReçues = new HashSet<Conversation>();
       return conversationReçues;
    }
 
-
-   public java.util.Iterator getIteratorConversationReçues() {
+   /** @pdGenerated default iterator getter */
+   public Iterator getIteratorConversationReçues() {
       if (conversationReçues == null)
-         conversationReçues = new java.util.HashSet<Conversation>();
+         conversationReçues = new HashSet<Conversation>();
       return conversationReçues.iterator();
    }
 
-   public void setConversationReçues(java.util.Collection<Conversation> newConversationReçues) {
+   /** @pdGenerated default setter
+     * @param newConversationReçues */
+   public void setConversationReçues(Collection<Conversation> newConversationReçues) {
       removeAllConversationReçues();
-      for (java.util.Iterator iter = newConversationReçues.iterator(); iter.hasNext();)
+      for (Iterator iter = newConversationReçues.iterator(); iter.hasNext();)
          addConversationReçues((Conversation)iter.next());
    }
 
+   /** @pdGenerated default add
+     * @param newConversation */
    public void addConversationReçues(Conversation newConversation) {
       if (newConversation == null)
          return;
       if (this.conversationReçues == null)
-         this.conversationReçues = new java.util.HashSet<Conversation>();
+         this.conversationReçues = new HashSet<Conversation>();
       if (!this.conversationReçues.contains(newConversation))
       {
          this.conversationReçues.add(newConversation);
@@ -408,7 +454,8 @@ public class Compte {
       }
    }
 
-
+   /** @pdGenerated default remove
+     * @param oldConversation */
    public void removeConversationReçues(Conversation oldConversation) {
       if (oldConversation == null)
          return;
@@ -420,11 +467,12 @@ public class Compte {
          }
    }
 
+   /** @pdGenerated default removeAll */
    public void removeAllConversationReçues() {
       if (conversationReçues != null)
       {
          Conversation oldConversation;
-         for (java.util.Iterator iter = getIteratorConversationReçues(); iter.hasNext();)
+         for (Iterator iter = getIteratorConversationReçues(); iter.hasNext();)
          {
             oldConversation = (Conversation)iter.next();
             iter.remove();

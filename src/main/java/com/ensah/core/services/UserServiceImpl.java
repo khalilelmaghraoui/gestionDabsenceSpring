@@ -1,20 +1,19 @@
 package com.ensah.core.services;
 
+import java.util.List;
+
+import org.passay.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.ensah.core.bo.Person;
 import com.ensah.core.bo.Role;
 import com.ensah.core.bo.UserAccount;
 import com.ensah.core.dao.IPersonDao;
 import com.ensah.core.dao.IRoleDao;
 import com.ensah.core.dao.IUserDao;
-import org.passay.CharacterRule;
-import org.passay.EnglishCharacterData;
-import org.passay.PasswordGenerator;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @Transactional
@@ -52,7 +51,7 @@ public class UserServiceImpl implements IUserService {
 		// determiner la personne
 		userAccount.setPerson(person);
 
-
+		
 		userAccount.setLastAccessDate(null);
 
 		// Affecter le role
@@ -68,17 +67,17 @@ public class UserServiceImpl implements IUserService {
 		// affecter ce mot de passe
 		userAccount.setPassword(encodedPass);
 
-
-
+		
+		
 		//On construit un login de type "nom+prenom " s'il est dispo
 		String login = person.getFirstName() + person.getLastName();
 
 		List<UserAccount> accounts = userDao.getEntityByColValue("UserAccount", "username", login);
 
 		if (accounts == null || accounts.size() == 0) {
-
+			
 			userAccount.setUsername(login);
-
+			
 			//Créer le compte
 			userDao.create(userAccount);
 			return generatedPass;
@@ -93,7 +92,7 @@ public class UserServiceImpl implements IUserService {
 			accounts = userDao.getEntityByColValue("UserAccount", "username", login);
 			if (accounts == null || accounts.size() == 0) {
 				userAccount.setUsername(login);
-
+				
 				//Créer le compte
 				userDao.create(userAccount);
 				return generatedPass;
@@ -103,7 +102,7 @@ public class UserServiceImpl implements IUserService {
 		}
 	}
 
-
+	
 	//génère le mot de passe. Il se base sur Passay
 	public String generatePassayPassword() {
 		CharacterRule digits = new CharacterRule(EnglishCharacterData.Digit);
@@ -114,6 +113,6 @@ public class UserServiceImpl implements IUserService {
 		return password;
 	}
 
-
+	
 
 }

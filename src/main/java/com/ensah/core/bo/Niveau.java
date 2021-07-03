@@ -1,45 +1,50 @@
-package com.ensah.core.bo; /***********************************************************************
- * Module:  Niveau.java
- * Author:  Hp
- * Purpose: Defines the Class Niveau
- ***********************************************************************/
+package com.ensah.core.bo;
 
-/** @pdOid 390926f6-8a5d-4b08-8986-c3121d3fcdf2 */
+import javax.persistence.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+
+@Entity
 public class Niveau {
-   /** @pdOid ef75bf84-f943-4ec6-9526-dd2107beb1d4 */
+   @Id
+   @GeneratedValue(strategy=GenerationType.IDENTITY)
    private int idNiveau;
-   /** @pdOid fcc406ad-c53c-40e7-a069-1143e2b71ede */
+
    private String alias;
-   /** @pdOid 863df96a-a7f5-4102-a1f7-bef1f16cbcef */
+
    private String titre;
 
-   /** @pdRoleInfo migr=no name=Module assc=Association_5 coll=java.util.Collection impl=java.util.HashSet mult=0..* */
-   public java.util.Collection<Module> modules;
-   /** @pdRoleInfo migr=no name=Inscription assc=Association_2 coll=java.util.Collection impl=java.util.HashSet mult=0..* side=A */
-   public java.util.Collection<Inscription> niveau;
-   /** @pdRoleInfo migr=no name=Filiere assc=Association_3 coll=java.util.Collection impl=java.util.HashSet mult=1..1 side=A */
+   @OneToMany(mappedBy="niveau", cascade=CascadeType.ALL)
+   public Collection<Module> modules;
+
+   @OneToMany(mappedBy="niveau", cascade=CascadeType.ALL)
+   public Collection<Inscription> niveau;
+
+   @ManyToOne
+   @JoinColumn(name="idModule")
    public Filiere filiere;
 
 
    /** @pdGenerated default getter */
-   public java.util.Collection<Module> getModules() {
+   public Collection<Module> getModules() {
       if (modules == null)
-         modules = new java.util.HashSet<Module>();
+         modules = new HashSet<Module>();
       return modules;
    }
 
    /** @pdGenerated default iterator getter */
-   public java.util.Iterator getIteratorModules() {
+   public Iterator getIteratorModules() {
       if (modules == null)
-         modules = new java.util.HashSet<Module>();
+         modules = new HashSet<Module>();
       return modules.iterator();
    }
 
    /** @pdGenerated default setter
      * @param newModules */
-   public void setModules(java.util.Collection<Module> newModules) {
+   public void setModules(Collection<Module> newModules) {
       removeAllModules();
-      for (java.util.Iterator iter = newModules.iterator(); iter.hasNext();)
+      for (Iterator iter = newModules.iterator(); iter.hasNext();)
          addModules((Module)iter.next());
    }
 
@@ -49,7 +54,7 @@ public class Niveau {
       if (newModule == null)
          return;
       if (this.modules == null)
-         this.modules = new java.util.HashSet<Module>();
+         this.modules = new HashSet<Module>();
       if (!this.modules.contains(newModule))
       {
          this.modules.add(newModule);
@@ -75,7 +80,7 @@ public class Niveau {
       if (modules != null)
       {
          Module oldModule;
-         for (java.util.Iterator iter = getIteratorModules(); iter.hasNext();)
+         for (Iterator iter = getIteratorModules(); iter.hasNext();)
          {
             oldModule = (Module)iter.next();
             iter.remove();
@@ -84,24 +89,24 @@ public class Niveau {
       }
    }
    /** @pdGenerated default getter */
-   public java.util.Collection<Inscription> getNiveau() {
+   public Collection<Inscription> getNiveau() {
       if (niveau == null)
-         niveau = new java.util.HashSet<Inscription>();
+         niveau = new HashSet<Inscription>();
       return niveau;
    }
 
    /** @pdGenerated default iterator getter */
-   public java.util.Iterator getIteratorNiveau() {
+   public Iterator getIteratorNiveau() {
       if (niveau == null)
-         niveau = new java.util.HashSet<Inscription>();
+         niveau = new HashSet<Inscription>();
       return niveau.iterator();
    }
 
    /** @pdGenerated default setter
      * @param newNiveau */
-   public void setNiveau(java.util.Collection<Inscription> newNiveau) {
+   public void setNiveau(Collection<Inscription> newNiveau) {
       removeAllNiveau();
-      for (java.util.Iterator iter = newNiveau.iterator(); iter.hasNext();)
+      for (Iterator iter = newNiveau.iterator(); iter.hasNext();)
          addNiveau((Inscription)iter.next());
    }
 
@@ -111,7 +116,7 @@ public class Niveau {
       if (newInscription == null)
          return;
       if (this.niveau == null)
-         this.niveau = new java.util.HashSet<Inscription>();
+         this.niveau = new HashSet<Inscription>();
       if (!this.niveau.contains(newInscription))
       {
          this.niveau.add(newInscription);
@@ -137,7 +142,7 @@ public class Niveau {
       if (niveau != null)
       {
          Inscription oldInscription;
-         for (java.util.Iterator iter = getIteratorNiveau(); iter.hasNext();)
+         for (Iterator iter = getIteratorNiveau(); iter.hasNext();)
          {
             oldInscription = (Inscription)iter.next();
             iter.remove();

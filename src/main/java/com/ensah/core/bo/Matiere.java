@@ -1,19 +1,19 @@
-package com.ensah.core.bo; /***********************************************************************
- * Module:  Matiere.java
- * Author:  Hp
- * Purpose: Defines the Class Matiere
- ***********************************************************************/
+package com.ensah.core.bo;
 
-/** @pdOid ee2e6aba-eed4-4d80-a523-eab9b8a218f0 */
+import javax.persistence.*;
+
+@Entity
 public class Matiere {
-   /** @pdOid 2365727d-1b57-4436-bf7a-3885fbdcdcf1 */
+   @Id
+   @GeneratedValue(strategy=GenerationType.IDENTITY)
    private int idMatiere;
-   /** @pdOid 2c58f6c4-2b8c-43af-8233-ebdb85cdde7f */
+
    private String nom;
-   /** @pdOid a96155a5-d87a-4d47-a9d2-e810a5e82538 */
+
    private String code;
 
-   /** @pdRoleInfo migr=no name=Module assc=Association_4 coll=java.util.Collection impl=java.util.HashSet mult=1..1 */
+   @ManyToOne
+   @JoinColumn(name="idModule")
    public Module module;
 
 

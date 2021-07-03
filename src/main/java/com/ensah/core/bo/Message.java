@@ -1,27 +1,38 @@
-package com.ensah.core.bo; /***********************************************************************
- * Module:  Message.java
- * Author:  Hp
- * Purpose: Defines the Class Message
- ***********************************************************************/
+package com.ensah.core.bo;
 
-/** @pdOid b18eef66-7ae4-449e-ac18-a6786c57e172 */
+import java.util.*;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+@Entity
+
 public class Message {
-   /** @pdOid 583e78f2-2168-4733-b77a-bd9bb2de9e60 */
+   @Id
+   @GeneratedValue(strategy=GenerationType.IDENTITY)
    private int idMessage;
-   /** @pdOid 5e86a64d-2208-497a-bb79-08ba5de3d4f8 */
-   private String texte;
-   /** @pdOid 0ca94b69-f666-41c1-bd55-b304eada0e14 */
-   private java.util.Date dateHeure;
 
-   /** @pdRoleInfo migr=no name=Conversation assc=Association_14 coll=java.util.Collection impl=java.util.HashSet mult=1..1 */
+   private String texte;
+
+   private Date dateHeure;
+
+   @ManyToOne
+   @JoinColumn(name="idConversation")
    public Conversation conversation;
-   /** @pdRoleInfo migr=no name=Compte assc=Association_12 coll=java.util.Collection impl=java.util.HashSet mult=1..1 side=A */
+
+   @ManyToOne
+   @JoinColumn(name="idCompte")
    public Compte expediteur;
-   /** @pdRoleInfo migr=no name=Compte assc=Association_13 coll=java.util.Collection impl=java.util.HashSet mult=1..1 side=A */
+
+   @ManyToOne
+   @JoinColumn(name="Com_idCompte")
    public Compte destinataire;
 
 
-   /** @pdGenerated default parent getter */
    public Conversation getConversation() {
       return conversation;
    }
